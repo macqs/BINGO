@@ -162,7 +162,6 @@ h2 { margin: 0 0 16px; }
   color: white;
   cursor: pointer;
 }
-
 /* 터치 드래그 중인 아이템 스타일 */
 .item.dragging {
   opacity: 0.6;

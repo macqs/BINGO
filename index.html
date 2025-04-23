@@ -1,3 +1,4 @@
+<!-- index.html -->
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -19,14 +20,14 @@
 
   <div id="quizModal">
     <div id="quizContent">
+      <!-- ===== 고난이도 섹션 (바뀐 부분) ===== -->
       <div class="quiz-section" id="high-level">
-        <h2>고난이도: 문장 매칭</h2>
+        <h2>고난이도: 아래 중 맞는 내용끼리 점을 이으시오</h2>
         <div class="draggables" id="high-items"></div>
-        <div class="droppables">
-          <div class="dropzone" data-match="o">정답</div>
-          <div class="dropzone" data-match="x">오답</div>
-        </div>
+        <div class="droppables" id="high-target"></div>
       </div>
+
+      <!-- 중/하난이도는 그대로 -->
       <div class="quiz-section" id="mid-level">
         <h2>중난이도: 문장 배열</h2>
         <div class="draggables" id="mid-items"></div>
@@ -41,6 +42,7 @@
         <div class="draggables" id="low-items"></div>
         <div id="low-target"></div>
       </div>
+
       <button id="closeQuizBtn">닫기</button>
     </div>
   </div>
