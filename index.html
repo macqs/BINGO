@@ -8,13 +8,16 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <h2>5×5 Bingo Board</h2>
+  <h2>글자놀이: 다모여 빙고판</h2>
   <div id="boardWrapper">
     <div id="board"></div>
     <div id="controls">
+      <input type="file" id="fileInput" accept=".csv, .xlsx" />
       <button id="setKeywords">키워드 입력/수정</button>
       <button id="toggleKeywords">키워드 숨김/보기</button>
       <button id="resetColors">색상 리셋</button>
+     <!-- 다운로드 버튼 추가 -->
+      <button id="downloadData">데이터 다운로드</button>
     </div>
   </div>
 
@@ -22,14 +25,14 @@
     <div id="quizContent">
       <!-- ===== 고난이도 섹션 (바뀐 부분) ===== -->
       <div class="quiz-section" id="high-level">
-        <h2>고난이도: 아래 중 맞는 내용끼리 점을 이으시오</h2>
+        <h2>퀴즈 : 어찌하다 / 어떠하다</h2>
         <div class="draggables" id="high-items"></div>
         <div class="droppables" id="high-target"></div>
       </div>
 
       <!-- 중/하난이도는 그대로 -->
       <div class="quiz-section" id="mid-level">
-        <h2>중난이도: 문장 배열</h2>
+        <h2>퀴즈 : 문장 완성</h2>
         <div class="draggables" id="mid-items"></div>
         <div id="mid-target">
           <div class="dropzone slot" data-slot="0"></div>
@@ -38,7 +41,7 @@
         </div>
       </div>
       <div class="quiz-section" id="low-level">
-        <h2>하난이도: 받침 드롭</h2>
+        <h2>퀴즈 : 받침 글자 찾기</h2>
         <div class="draggables" id="low-items"></div>
         <div id="low-target"></div>
       </div>
@@ -47,6 +50,7 @@
     </div>
   </div>
 
+  <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
   <script src="script.js"></script>
 </body>
 </html>
