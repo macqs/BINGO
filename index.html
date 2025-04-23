@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>5×5 Bingo + Drag & Drop Quiz</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <h2>5×5 Bingo Board</h2>
+  <div id="boardWrapper">
+    <div id="board"></div>
+    <div id="controls">
+      <button id="setKeywords">키워드 입력/수정</button>
+      <button id="toggleKeywords">키워드 숨김/보기</button>
+      <button id="resetColors">색상 리셋</button>
+    </div>
+  </div>
+
+  <div id="quizModal">
+    <div id="quizContent">
+      <div class="quiz-section" id="high-level">
+        <h2>고난이도: 문장 매칭</h2>
+        <div class="draggables" id="high-items"></div>
+        <div class="droppables">
+          <div class="dropzone" data-match="o">정답</div>
+          <div class="dropzone" data-match="x">오답</div>
+        </div>
+      </div>
+      <div class="quiz-section" id="mid-level">
+        <h2>중난이도: 문장 배열</h2>
+        <div class="draggables" id="mid-items"></div>
+        <div id="mid-target">
+          <div class="dropzone slot" data-slot="0"></div>
+          <div class="dropzone slot" data-slot="1"></div>
+          <div class="dropzone slot" data-slot="2"></div>
+        </div>
+      </div>
+      <div class="quiz-section" id="low-level">
+        <h2>하난이도: 받침 드롭</h2>
+        <div class="draggables" id="low-items"></div>
+        <div id="low-target"></div>
+      </div>
+      <button id="closeQuizBtn">닫기</button>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
