@@ -293,6 +293,94 @@ document.getElementById('resetColors').onclick = function(){
   localStorage.setItem('bingo_colors', JSON.stringify(cellStates));
   renderBoard();
 };
+// --- 터치 기반 드래그&드롭 지원 로직 ---
+(function(){
+  let touchState = {};
 
-// 초기 렌더
-renderBoard();
+  function onTouchStart(e) {
+    const el = e.currentTarget;
+    e.preventDefault();
+
+    const touch = e.touches[0];
+    const rect = el.getBoundingClientRect();
+
+    touchState.el = el;
+    touchState.offsetX = touch.clientX - rect.left;
+    touchState.offsetY = touch.clientY - rect.top;
+
+    // 드래그 중일 clone 생성
+    const clone = el.cloneNode(true);
+    clone.classList.add('dragging');
+    clone.style.width  = rect.width + 'px';
+    clone.style.height = rect.height + 'px';
+    document.body.appendChild(clone);
+    touchState.clone = clone;
+
+    moveClone(touch);
+  }
+
+  function onTouchMove(e) {
+    if (!touchState.clone) return;
+    e.preventDefault();
+    moveClone(e.touches[0]);
+  }
+
+  function onTouchEnd(e) {
+    if (!touchState.clone) return;
+    e.preventDefault();
+
+    const clone = touchState.clone;
+    // 클론이 가리키는 중앙 위치 계산
+    const dropX = parseFloat(clone.style.left) + touchState.offsetX;
+    const dropY = parseFloat(clone.style.top)  + touchState.offsetY;
+
+    // Remove clone
+    clone.remove();
+
+    // 실제 드롭이벤트 로직 호출
+    const dropEl = document.elementFromPoint(dropX, dropY).closest('.dropzone.final');
+    if (dropEl) {
+      // 기존 drop 핸들러 로직 재활용
+      const dragged = touchState.el;
+      // 하난이도 받침 문제(dropzone.final) 처리
+      if (dragged.dataset.char === dropEl.dataset.final) {
+        dropEl.textContent = dragged.textContent;
+        dropEl.classList.add('correct');
+      } else {
+        dropEl.style.background = '#ffcdd2';
+        setTimeout(() => dropEl.style.background = '#eaeaea', 500);
+      }
+    }
+
+    touchState = {};
+  }
+
+  function moveClone(touch) {
+    const x = touch.clientX - touchState.offsetX;
+    const y = touch.clientY - touchState.offsetY;
+    touchState.clone.style.left = x + 'px';
+    touchState.clone.style.top  = y + 'px';
+  }
+
+  // 이벤트 바인딩
+  function enableTouchDrag() {
+    const items = document.querySelectorAll('.item');
+    items.forEach(item => {
+      item.addEventListener('touchstart', onTouchStart, { passive: false });
+      item.addEventListener('touchmove',  onTouchMove,  { passive: false });
+      item.addEventListener('touchend',   onTouchEnd,   { passive: false });
+    });
+  }
+
+  // 퀴즈 모달이 열릴 때마다 .item이 갱신되므로, openQuiz 안 renderBoard 이후에 호출
+  const originalOpenQuiz = openQuiz;
+  openQuiz = function(idx, level) {
+    originalOpenQuiz(idx, level);
+    // 드래그 가능한 아이템에 터치 이벤트 다시 설정
+    enableTouchDrag();
+  };
+
+  // 초기 렌더 이후에도 터치 지원
+  renderBoard();
+  enableTouchDrag();
+})();
