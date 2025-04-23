@@ -341,15 +341,45 @@ function handleFile(e){
   if(name.endsWith('.csv')) reader.readAsText(file,'UTF-8');
   else reader.readAsArrayBuffer(file);
 }
-function parseCSV(text){
-  var [hdr,...lines]=text.trim().split(/\r?\n/);
-  var keys=hdr.split(/\s*,\s*/);
-  return lines.map(l=>{
-    var cols=l.split(/\s*,\s*/), o={};
-    keys.forEach((k,i)=>o[k.trim()]=cols[i]||'');
-    return o;
+// ─── CSV 한 줄(line)→배열(cols) 변환 (큰따옴표+이중 큰따옴표 지원) ───
+function parseCSVLine(line) {
+  var cols = [];
+  var cur  = '';
+  var inQ  = false;
+  for (var i = 0; i < line.length; i++) {
+    var ch = line[i];
+    if (ch === '"') {
+      if (inQ && line[i+1] === '"') {
+        cur += '"';
+        i++;
+      } else {
+        inQ = !inQ;
+      }
+    } else if (ch === ',' && !inQ) {
+      cols.push(cur);
+      cur = '';
+    } else {
+      cur += ch;
+    }
+  }
+  cols.push(cur);
+  return cols;
+}
+
+// ─── 전체 텍스트→[{…},…] 변환 ───
+function parseCSV(text) {
+  var lines   = text.trim().split(/\r?\n/);
+  var headers = parseCSVLine(lines.shift());
+  return lines.map(function(line) {
+    var vals = parseCSVLine(line);
+    var obj  = {};
+    headers.forEach(function(h, i) {
+      obj[h.trim()] = vals[i] !== undefined ? vals[i] : '';
+    });
+    return obj;
   });
 }
+
 function applyData(rows){
   rows.forEach(function(r){
     var raw = parseInt(r.index,10);
