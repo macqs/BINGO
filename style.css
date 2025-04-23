@@ -162,3 +162,12 @@ h2 { margin: 0 0 16px; }
   color: white;
   cursor: pointer;
 }
+
+/* 터치 드래그 중인 아이템 스타일 */
+.item.dragging {
+  opacity: 0.6;
+  position: absolute;
+  z-index: 1000;
+  touch-action: none; /* 터치 이동 시 브라우저 스크롤 방지 */
+  pointer-events: none;
+}
