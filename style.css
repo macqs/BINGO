@@ -7,7 +7,7 @@ body {
   padding: 20px;
   background: #f5f7fb;
 }
-h2 { margin: 0 0 20px; }
+h2 { margin: 0 0 1px; }
 #boardWrapper { position: relative; }
 #board {
   display: grid;
