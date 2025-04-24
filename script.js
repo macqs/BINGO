@@ -60,7 +60,7 @@ function createCell(idx){
   cell.dataset.index = idx;
   if(idx===12){
     cell.classList.add('middle');
-    cell.innerHTML = '<span style="font-size:30px;">남대구</span>';
+    cell.innerHTML = '<span style="font-size:30px;">다모여</span>';
   } else {
     cell.textContent = showKeywords ? keywords[idx] : '';
     if(cellStates[idx]) cell.classList.add(cellStates[idx]);
